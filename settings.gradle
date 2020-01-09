@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name='AAC-MVVM-Dagger2-Retrofit-Room'

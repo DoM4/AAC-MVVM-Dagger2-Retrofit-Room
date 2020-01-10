@@ -2,9 +2,11 @@ package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.di
 
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.api.UserApi
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.BASE_URL
+import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.SchedulerProvider
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,6 +21,12 @@ import javax.inject.Singleton
  */
 @Module(includes = [ViewModelModule::class])
 object AppModule{
+
+    @Provides
+    @Singleton
+    fun provideSchedulerProvider() = SchedulerProvider(Schedulers.io(),
+        AndroidSchedulers.mainThread())
+
     @Singleton
     @Provides
     fun provideUserApi() : UserApi {

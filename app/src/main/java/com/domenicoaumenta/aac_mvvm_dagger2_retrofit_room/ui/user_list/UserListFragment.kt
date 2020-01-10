@@ -58,5 +58,7 @@ class UserListFragment : DaggerFragment(){
         val userSelectedListener = activity as? UserSelectedListener
         userAdapter = UsersAdapter(userSelectedListener)
         rvUserListActivity.adapter = userAdapter
+
+        userListViewModel.showUserListFromNetwork()
     }
 }

@@ -41,22 +41,11 @@
             android:id="@+id/userReputationLabel"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:text="@string/reputation"
+            android:text="@string/user_reputation"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/userName"
-            app:layout_constraintTop_toBottomOf="@id/userName" />
-
-        <TextView
-            android:id="@+id/userReputationValue"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="5dp"
-            android:textColor="@color/colorBlack"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/userReputationLabel"
             app:layout_constraintTop_toBottomOf="@id/userName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

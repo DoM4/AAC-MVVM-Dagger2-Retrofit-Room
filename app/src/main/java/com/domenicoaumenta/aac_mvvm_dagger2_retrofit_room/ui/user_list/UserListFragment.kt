@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.R
+import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.User
+import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ui.user_details.UserDetailsFragment
+import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.USER_BUNDLE
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.ViewModelFactory
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.user_list_fragment.*
@@ -19,7 +20,21 @@ import javax.inject.Inject
 /**
  * Created by domenicoaumenta on 2020-01-09.
  */
-class UserListFragment : DaggerFragment(){
+class UserListFragment : DaggerFragment(),UserSelectedListener{
+    override fun onUserClicked(user: User) {
+
+        val detailsFragment = activity?.supportFragmentManager?.fragments?.find {
+            it is UserDetailsFragment
+        } ?: UserDetailsFragment()
+
+        detailsFragment.arguments = Bundle().apply { putParcelable(USER_BUNDLE, user) }
+
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.add(R.id.screenContainer, detailsFragment)
+            ?.addToBackStack(null)
+            ?.commit()
+
+    }
 
     @Inject lateinit var viewModelFactory : ViewModelFactory
 
@@ -56,7 +71,8 @@ class UserListFragment : DaggerFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userAdapter = UsersAdapter()
+        val userSelectedListener = this
+        userAdapter = UsersAdapter(userSelectedListener)
         rvUserListActivity.adapter = userAdapter
     }
 }

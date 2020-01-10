@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso
  * Created by domenicoaumenta on 2020-01-09.
  */
 
-class UsersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class UsersAdapter(val userSelectedListener: UserSelectedListener?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var users = emptyList<User>()
 
@@ -45,16 +45,19 @@ class UsersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var userName : TextView? = itemView.findViewById(R.id.userName)
         private var userThumbnail : ImageView? = itemView.findViewById(R.id.userThumbnail)
-        private var userReputationValue : TextView? = itemView.findViewById(R.id.userReputationValue)
-        private var userContainer : CardView = itemView.findViewById(R.id.userContainer)
+        private var userReputationLabel : TextView? = itemView.findViewById(R.id.userReputationLabel)
+        private var userContainer : CardView? = itemView.findViewById(R.id.userContainer)
         fun bind(user: User) {
             userName?.text = user.displayName
-            userReputationValue?.text = user.reputation.toString()
+            userReputationLabel?.text = itemView.context.getString(R.string.user_reputation,user.reputation)
             Picasso.get()
                 .load(user.profileImage)
                 .transform(CircleTransform())
                 .into(userThumbnail)
 
+            userContainer?.setOnClickListener {
+                userSelectedListener?.onUserClicked(user)
+            }
         }
 
     }

@@ -1,11 +1,14 @@
 package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by domenicoaumenta on 2020-01-09.
  */
+@Parcelize
 data class User(
     @SerializedName("about_me")
     @Expose
@@ -67,11 +70,4 @@ data class User(
     @SerializedName("website_url")
     @Expose
     val websiteUrl: String
-){
-    constructor(userId: Int) : this(null,
-        0,
-        0,
-        0,
-        0,
-        "Dom",0,false,0,0,"","London","",0,1,1,userId,"admin",0,"")
-}
+) : Parcelable

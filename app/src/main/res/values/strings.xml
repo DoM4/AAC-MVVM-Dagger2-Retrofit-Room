@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">AAC-MVVM-Dagger2-Retrofit-Room</string>
     <string name="generale_error_message">An error occurred</string>
-    <string name="reputation">Reputation : </string>
+    <string name="user_id">UserId : %d</string>
+    <string name="user_location" formatted="false">Location : %s</string>
+    <string name="user_reputation" formatted="false">Reputation : %d</string>
+    <string name="user_member_since" formatted="false">Member since : %s</string>
 </resources>

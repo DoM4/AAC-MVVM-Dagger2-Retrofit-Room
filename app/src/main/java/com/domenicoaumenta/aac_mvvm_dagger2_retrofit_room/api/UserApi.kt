@@ -16,9 +16,9 @@ interface UserApi {
     @GET("2.2/users")
     fun getUsersByReputation(
         @Query("pagesize") pageSize : Int = 1,
-        @Query("order") order : String ? = "desc",
-        @Query("sort") sort : String ? = "reputation",
-        @Query("site") site : String? = "stackoverflow"
+        @Query("order") order : String  = "desc",
+        @Query("sort") sort : String  = "reputation",
+        @Query("site") site : String = "stackoverflow"
     ) : Single<UserResponse>
 
 }

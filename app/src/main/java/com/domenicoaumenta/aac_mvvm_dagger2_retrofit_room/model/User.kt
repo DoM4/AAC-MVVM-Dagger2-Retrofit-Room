@@ -10,6 +10,9 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class User(
+    @SerializedName("user_id")
+    @Expose
+    val userId: Int,
     @SerializedName("about_me")
     @Expose
     val aboutMe: String?,
@@ -58,9 +61,6 @@ data class User(
     @SerializedName("up_vote_count")
     @Expose
     val upVoteCount: Int,
-    @SerializedName("user_id")
-    @Expose
-    val userId: Int,
     @SerializedName("user_type")
     @Expose
     val userType: String,

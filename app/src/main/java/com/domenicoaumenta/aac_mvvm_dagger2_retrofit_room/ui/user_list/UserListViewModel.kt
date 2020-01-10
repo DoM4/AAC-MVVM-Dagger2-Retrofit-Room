@@ -14,11 +14,13 @@ import io.reactivex.disposables.CompositeDisposable
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.View
+import androidx.annotation.VisibleForTesting
+import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.SchedulerProvider
 
 /**
  * Created by domenicoaumenta on 2020-01-09.
  */
-class UserListViewModel @Inject constructor(private val userApi: UserApi) : ViewModel(){
+class UserListViewModel @Inject constructor(private val userApi: UserApi,private val schedulerProvider: SchedulerProvider) : ViewModel(){
 
     val userResultList : MutableLiveData<List<User>> = MutableLiveData()
     private var disposable: CompositeDisposable? = null
@@ -41,13 +43,12 @@ class UserListViewModel @Inject constructor(private val userApi: UserApi) : View
     init {
         disposable = CompositeDisposable()
         loading.value = View.VISIBLE
-        showUserListFromNetwork()
+//        showUserListFromNetwork()
     }
-
-    private fun showUserListFromNetwork() {
+    fun showUserListFromNetwork() {
         disposable?.add(userApi
             .getUsersByReputation(100)
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(schedulerProvider.backgroundScheduler)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableSingleObserver<UserResponse>(){
                 override fun onSuccess(t: UserResponse) {

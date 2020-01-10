@@ -12,6 +12,7 @@ import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.R
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.User
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.CircleTransform
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_user.view.*
 
 
 /**
@@ -43,19 +44,15 @@ class UsersAdapter(val userSelectedListener: UserSelectedListener?) : RecyclerVi
     internal inner class UserViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        private var userName : TextView? = itemView.findViewById(R.id.userName)
-        private var userThumbnail : ImageView? = itemView.findViewById(R.id.userThumbnail)
-        private var userReputationLabel : TextView? = itemView.findViewById(R.id.userReputationLabel)
-        private var userContainer : CardView? = itemView.findViewById(R.id.userContainer)
         fun bind(user: User) {
-            userName?.text = user.displayName
-            userReputationLabel?.text = itemView.context.getString(R.string.user_reputation,user.reputation)
+            itemView.userName?.text = user.displayName
+            itemView.userReputationLabel?.text = itemView.context.getString(R.string.user_reputation,user.reputation)
             Picasso.get()
                 .load(user.profileImage)
                 .transform(CircleTransform())
-                .into(userThumbnail)
+                .into(itemView.userThumbnail)
 
-            userContainer?.setOnClickListener {
+            itemView.userContainer?.setOnClickListener {
                 userSelectedListener?.onUserClicked(user)
             }
         }

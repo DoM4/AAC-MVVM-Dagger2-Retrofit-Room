@@ -8,9 +8,6 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.R
-import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.User
-import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ui.user_details.UserDetailsFragment
-import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.USER_BUNDLE
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.ViewModelFactory
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.user_list_fragment.*
@@ -20,25 +17,12 @@ import javax.inject.Inject
 /**
  * Created by domenicoaumenta on 2020-01-09.
  */
-class UserListFragment : DaggerFragment(),UserSelectedListener{
-    override fun onUserClicked(user: User) {
-
-        val detailsFragment = activity?.supportFragmentManager?.fragments?.find {
-            it is UserDetailsFragment
-        } ?: UserDetailsFragment()
-
-        detailsFragment.arguments = Bundle().apply { putParcelable(USER_BUNDLE, user) }
-
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.add(R.id.screenContainer, detailsFragment)
-            ?.addToBackStack(null)
-            ?.commit()
-
-    }
+class UserListFragment : DaggerFragment(){
 
     @Inject lateinit var viewModelFactory : ViewModelFactory
 
     lateinit var userListViewModel : UserListViewModel
+
     lateinit var userAdapter: UsersAdapter
 
     override fun onCreateView(
@@ -71,7 +55,7 @@ class UserListFragment : DaggerFragment(),UserSelectedListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val userSelectedListener = this
+        val userSelectedListener = activity as? UserSelectedListener
         userAdapter = UsersAdapter(userSelectedListener)
         rvUserListActivity.adapter = userAdapter
     }

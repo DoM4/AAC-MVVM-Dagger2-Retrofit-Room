@@ -1,4 +1,4 @@
-package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ui
+package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ui.user_list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +13,7 @@ import javax.inject.Inject
 import io.reactivex.disposables.CompositeDisposable
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.view.View
 
 /**
  * Created by domenicoaumenta on 2020-01-09.
@@ -23,7 +24,7 @@ class UserListViewModel @Inject constructor(private val userApi: UserApi) : View
     private var disposable: CompositeDisposable? = null
 
     private val repoLoadError = MutableLiveData<Boolean>()
-    private val loading = MutableLiveData<Boolean>()
+    private val loading = MutableLiveData<Int>()
 
     fun geUserList(): LiveData<List<User>> {
         return userResultList
@@ -33,12 +34,13 @@ class UserListViewModel @Inject constructor(private val userApi: UserApi) : View
         return repoLoadError
     }
 
-    fun getLoading(): LiveData<Boolean> {
+    fun getLoading(): LiveData<Int> {
         return loading
     }
 
     init {
         disposable = CompositeDisposable()
+        loading.value = View.VISIBLE
         showUserListFromNetwork()
     }
 
@@ -51,12 +53,12 @@ class UserListViewModel @Inject constructor(private val userApi: UserApi) : View
                 override fun onSuccess(t: UserResponse) {
                     repoLoadError.value = false
                     userResultList.value = t.users
-                    loading.value = false
+                    loading.value = View.GONE
                 }
 
                 override fun onError(e: Throwable) {
                     repoLoadError.value = true
-                    loading.value = false
+                    loading.value =  View.GONE
                 }
             }))
     }

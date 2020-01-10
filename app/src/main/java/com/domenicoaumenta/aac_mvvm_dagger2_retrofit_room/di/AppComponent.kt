@@ -2,7 +2,6 @@ package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.di
 
 import android.app.Application
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ACCApplication
-import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ui.main.UserFragmentBindingModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule

@@ -1,4 +1,4 @@
-package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ui.main
+package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.di
 
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.api.UserApi
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ui.user_list.UserListViewModel

@@ -3,7 +3,6 @@ package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ui.user_list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.api.UserApi
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.User
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.UserResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,13 +10,9 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import io.reactivex.disposables.CompositeDisposable
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.View
-import androidx.annotation.VisibleForTesting
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.repository.UserRepository
-import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.SchedulerProvider
-import io.reactivex.Single
+import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.EspressoIdlingResource
 
 /**
  * Created by domenicoaumenta on 2020-01-09.
@@ -48,6 +43,9 @@ class UserListViewModel @Inject constructor(private val userRepository: UserRepo
     }
 
     fun showUserListFromNetwork() {
+
+        EspressoIdlingResource.increment()
+
         disposable?.add(userRepository
             .getUsers()
             .subscribeOn(Schedulers.io())

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.R
+import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.EspressoIdlingResource
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.ViewModelFactory
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.user_list_fragment.*
@@ -40,6 +41,7 @@ class UserListFragment : DaggerFragment(){
 
         userListViewModel.geUserList().observe(this, Observer {
             userAdapter.setUsers(it)
+            EspressoIdlingResource.decrementIfNotIdle()
         })
 
         userListViewModel.getLoading().observe(this, Observer {
@@ -48,7 +50,10 @@ class UserListFragment : DaggerFragment(){
 
         userListViewModel.getError().observe(this, Observer {
             when(it){
-                true -> Toast.makeText(context,getString(R.string.generale_error_message),Toast.LENGTH_SHORT).show()
+                true -> {
+                    Toast.makeText(context,getString(R.string.generale_error_message),Toast.LENGTH_SHORT).show()
+                    EspressoIdlingResource.decrementIfNotIdle()
+                }
             }
         })
     }

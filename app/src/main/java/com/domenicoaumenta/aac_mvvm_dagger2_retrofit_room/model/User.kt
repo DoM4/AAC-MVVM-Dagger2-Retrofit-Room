@@ -1,6 +1,8 @@
 package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -8,10 +10,12 @@ import kotlinx.android.parcel.Parcelize
 /**
  * Created by domenicoaumenta on 2020-01-09.
  */
+@Entity
 @Parcelize
 data class User(
     @SerializedName("user_id")
     @Expose
+    @PrimaryKey
     val userId: Int,
     @SerializedName("about_me")
     @Expose

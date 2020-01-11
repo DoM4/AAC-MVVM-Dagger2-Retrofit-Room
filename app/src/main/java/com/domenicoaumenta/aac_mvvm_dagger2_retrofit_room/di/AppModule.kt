@@ -1,8 +1,11 @@
 package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.di
 
+import android.app.Application
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.api.UserApi
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.BASE_URL
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.SchedulerProvider
+import com.google.gson.FieldNamingPolicy
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -13,6 +16,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import javax.inject.Singleton
 
 
@@ -24,23 +28,28 @@ object AppModule{
 
     @Provides
     @Singleton
-    fun provideSchedulerProvider() = SchedulerProvider(Schedulers.io(),
-        AndroidSchedulers.mainThread())
+    fun provideGson(): Gson {
+        return GsonBuilder()
+            .create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        return OkHttpClient.Builder().addInterceptor(interceptor).build()
+    }
 
     @Singleton
     @Provides
-    fun provideUserApi() : UserApi {
-
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
-        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
-
+    fun provideUserApi(gson: Gson,okHttpClient: OkHttpClient) : UserApi {
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .client(client)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(okHttpClient)
             .build()
             .create(UserApi::class.java)
     }

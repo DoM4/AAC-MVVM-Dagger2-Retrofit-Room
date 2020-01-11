@@ -2,6 +2,7 @@ package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room
 
 import android.os.Bundle
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -20,7 +21,7 @@ import org.junit.runner.RunWith
 @RunWith(androidx.test.ext.junit.runners.AndroidJUnit4::class)
 class UserDetailsFragmentTest {
 
-    lateinit var bundleForUserDetailsFragment : Bundle
+    private lateinit var bundleForUserDetailsFragment : Bundle
 
     @Before
     fun setup(){

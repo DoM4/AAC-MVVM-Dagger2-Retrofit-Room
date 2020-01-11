@@ -1,58 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorLightGrey"
     android:clickable="true">
 
-    <ImageView
-        android:id="@+id/userDetailsThumbnail"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="10dp"
-        />
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme"
+        >
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="56dp"
+            app:expandedTitleMarginStart="40dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            <ImageView
+                android:id="@+id/userDetailsThumbnail"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-    <TextView
-        android:id="@+id/userDetailsName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="George"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/userDetailsThumbnail"
-        app:layout_constraintStart_toStartOf="@id/userDetailsThumbnail"
-        />
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/userDetailsUserId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/userDetailsName"
-        app:layout_constraintStart_toStartOf="@id/userDetailsThumbnail"
-        />
-    <TextView
-        android:id="@+id/userDetailsReputation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/userDetailsUserId"
-        app:layout_constraintStart_toStartOf="@id/userDetailsThumbnail"
-        />
-    <TextView
-        android:id="@+id/userDetailsLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/userDetailsReputation"
-        app:layout_constraintStart_toStartOf="@id/userDetailsThumbnail"
-        />
-    <TextView
-        android:id="@+id/userDetailsMemberSince"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/userDetailsLocation"
-        app:layout_constraintStart_toStartOf="@id/userDetailsThumbnail"
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            >
+            <TextView
+                android:id="@+id/userDetailsName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="George"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:id="@+id/userDetailsUserId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:id="@+id/userDetailsReputation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:id="@+id/userDetailsLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:id="@+id/userDetailsMemberSince"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

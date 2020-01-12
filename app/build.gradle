@@ -38,6 +38,10 @@ android {
     androidExtensions {
         experimental = true
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -83,4 +87,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
     implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
     debugImplementation 'androidx.fragment:fragment-testing:1.2.0-rc05'
+
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
+    implementation 'android.arch.persistence.room:rxjava2:1.1.1'
+    kapt 'android.arch.persistence.room:compiler:1.1.1'
+
+    implementation "android.arch.lifecycle:reactivestreams:1.1.1"
+
 }

@@ -1,7 +1,10 @@
 package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.di
 
 import android.app.Application
+import android.service.autofill.UserData
+import androidx.room.Room
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.api.UserApi
+import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.db.UserDatabase
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.BASE_URL
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.SchedulerProvider
 import com.google.gson.FieldNamingPolicy
@@ -52,5 +55,14 @@ object AppModule{
             .client(okHttpClient)
             .build()
             .create(UserApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserDatabase(app: Application) : UserDatabase{
+        return Room
+            .databaseBuilder(app, UserDatabase::class.java, "users.db")
+            .fallbackToDestructiveMigration()
+            .build()
     }
 }

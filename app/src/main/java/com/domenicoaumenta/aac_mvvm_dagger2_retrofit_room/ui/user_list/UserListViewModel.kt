@@ -11,61 +11,29 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import io.reactivex.disposables.CompositeDisposable
 import android.view.View
+import androidx.lifecycle.LiveDataReactiveStreams
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.repository.UserRepository
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.EspressoIdlingResource
+import io.reactivex.BackpressureStrategy
 
 /**
  * Created by domenicoaumenta on 2020-01-09.
  */
 class UserListViewModel @Inject constructor(private val userRepository: UserRepository) : ViewModel(){
 
-    val userResultList : MutableLiveData<List<User>> = MutableLiveData()
-    private var disposable: CompositeDisposable? = null
+    private val mutableOnError = MutableLiveData<Throwable?>()
+    val onError: LiveData<Throwable?>
+        get() = mutableOnError
 
-    private val repoLoadError = MutableLiveData<Boolean>()
-    private val loading = MutableLiveData<Int>()
+    fun getUserList(): LiveData<List<User>> = showUserListFromNetwork()
 
-    fun geUserList(): LiveData<List<User>> {
-        return userResultList
-    }
-
-    fun getError(): LiveData<Boolean> {
-        return repoLoadError
-    }
-
-    fun getLoading(): LiveData<Int> {
-        return loading
-    }
-
-    init {
-        disposable = CompositeDisposable()
-        loading.value = View.VISIBLE
-    }
-
-    fun showUserListFromNetwork() {
-
+    fun showUserListFromNetwork() : LiveData<List<User>> {
         EspressoIdlingResource.increment()
-
-        disposable?.add(userRepository
-            .getUsers()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : DisposableSingleObserver<UserResponse>(){
-                override fun onSuccess(t: UserResponse) {
-                    repoLoadError.value = false
-                    userResultList.value = t.users
-                    loading.value = View.GONE
-                }
-
-                override fun onError(e: Throwable) {
-                    repoLoadError.value = true
-                    loading.value =  View.GONE
-                }
-            }))
+        return LiveDataReactiveStreams.fromPublisher(userRepository.getUsers {mutableOnError.value = it}.toFlowable(BackpressureStrategy.LATEST))
     }
 
     override fun onCleared() {
         super.onCleared()
-        disposable?.dispose()
+        userRepository.clear()
     }
 }

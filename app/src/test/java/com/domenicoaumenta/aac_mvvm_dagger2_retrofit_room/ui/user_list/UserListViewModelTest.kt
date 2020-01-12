@@ -3,10 +3,9 @@ package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ui.user_list
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.User
-import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.UserResponse
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.repository.UserRepository
 import com.nhaarman.mockitokotlin2.*
-import io.reactivex.Single
+import io.reactivex.Observable
 import org.junit.*
 
 
@@ -21,7 +20,7 @@ class UserListViewModelTest {
 
     private val userRepository: UserRepository = mock()
 
-    lateinit var userListViewModel: UserListViewModel
+    private lateinit var userListViewModel: UserListViewModel
 
     @Before
     fun setup(){
@@ -30,24 +29,19 @@ class UserListViewModelTest {
 
     @Test
     fun getUserResultList() {
+
         val userList = listOf(
             fakeUser(11111),
             fakeUser(22222)
         )
-
-        val userResponse = UserResponse(userList, null, null, null)
-        whenever(userRepository.getUsers()).doReturn(Single.just(userResponse))
+        whenever(userRepository.getUsers()).doReturn(Observable.just(userList))
 
         // live data observer
         val observerUserList : Observer<List<User>> = mock()
 
-        userListViewModel.geUserList().observeForever(observerUserList)
-        //method to be tested
-        userListViewModel.showUserListFromNetwork()
-
+        userListViewModel.getUserList().observeForever(observerUserList)
         //Captor will intercept values emitted by live data
         val userListCaptor = argumentCaptor<List<User>>()
-
         userListCaptor.run {
             verify(observerUserList, times(1)).onChanged(capture())
             assert(firstValue == userList)

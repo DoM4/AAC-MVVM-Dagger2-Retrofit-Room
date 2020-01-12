@@ -8,4 +8,4 @@ TODO
 
 - Improve error handling
 
-- Unit/UI test coverage
+- More Unit/UI test coverage

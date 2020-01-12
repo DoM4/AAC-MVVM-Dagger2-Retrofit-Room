@@ -3,6 +3,7 @@ package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ui.user_list
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -22,9 +23,9 @@ class UserListFragment : DaggerFragment(){
 
     @Inject lateinit var viewModelFactory : ViewModelFactory
 
-    lateinit var userListViewModel : UserListViewModel
+    private lateinit var userListViewModel : UserListViewModel
 
-    lateinit var userAdapter: UsersAdapter
+    private lateinit var userAdapter: UsersAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,22 +40,16 @@ class UserListFragment : DaggerFragment(){
 
         userListViewModel = ViewModelProviders.of(this,viewModelFactory)[UserListViewModel::class.java]
 
-        userListViewModel.geUserList().observe(this, Observer {
-            userAdapter.setUsers(it)
+        userListViewModel.getUserList().observe(this, Observer { list ->
+            userAdapter.setUsers(list.sortedByDescending { it.reputation })
+            pbUserListActivity.visibility = GONE
             EspressoIdlingResource.decrementIfNotIdle()
         })
 
-        userListViewModel.getLoading().observe(this, Observer {
-                visibility -> pbUserListActivity.visibility = visibility
-        })
-
-        userListViewModel.getError().observe(this, Observer {
-            when(it){
-                true -> {
+        userListViewModel.onError.observe(this, Observer {
+                    pbUserListActivity.visibility = GONE
                     Toast.makeText(context,getString(R.string.generale_error_message),Toast.LENGTH_SHORT).show()
                     EspressoIdlingResource.decrementIfNotIdle()
-                }
-            }
         })
     }
 

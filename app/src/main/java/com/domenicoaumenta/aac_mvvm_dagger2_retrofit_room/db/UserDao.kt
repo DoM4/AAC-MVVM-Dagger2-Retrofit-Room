@@ -1,11 +1,11 @@
 package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.User
+import io.reactivex.Observable
 import io.reactivex.Single
 
 
@@ -17,9 +17,8 @@ abstract class UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insert(users: List<User>)
 
-
     @Query("SELECT * FROM User")
-    abstract fun loadUsers(): Single<List<User>>
+    abstract fun loadUsers(): Observable<List<User>>
 
     @Query("SELECT * FROM User WHERE :userId = userId")
     abstract fun getUser(userId: String): Single<User>

@@ -52,7 +52,7 @@ data class User(
     val link: String,
     @SerializedName("location")
     @Expose
-    val location: String,
+    val location: String?,
     @SerializedName("profile_image")
     @Expose
     val profileImage: String,
@@ -73,5 +73,5 @@ data class User(
     val viewCount: Int,
     @SerializedName("website_url")
     @Expose
-    val websiteUrl: String
+    val websiteUrl: String?
 ) : Parcelable

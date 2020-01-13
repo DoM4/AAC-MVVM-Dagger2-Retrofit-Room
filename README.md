@@ -4,8 +4,6 @@ Android sample application written using Kotlin and MVVM pattern The app shows a
 
 TODO
 
-- Add Room Database logic
-
 - Improve error handling
 
 - More Unit/UI test coverage

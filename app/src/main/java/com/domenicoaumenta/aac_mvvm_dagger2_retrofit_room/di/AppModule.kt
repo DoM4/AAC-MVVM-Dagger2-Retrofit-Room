@@ -33,6 +33,7 @@ object AppModule{
     @Singleton
     fun provideGson(): Gson {
         return GsonBuilder()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create()
     }
 

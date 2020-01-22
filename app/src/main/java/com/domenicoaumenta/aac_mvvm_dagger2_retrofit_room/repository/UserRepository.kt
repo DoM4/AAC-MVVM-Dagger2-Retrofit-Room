@@ -1,16 +1,12 @@
 package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.repository
 
-import android.view.View
-import androidx.lifecycle.LiveData
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.api.UserApi
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.db.UserDatabase
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.User
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.UserResponse
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.internal.operators.single.SingleInternalHelper.toObservable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -27,28 +23,6 @@ open class UserRepository @Inject constructor(
 
     var disposable : Disposable? = null
     var dbDisposable : Disposable? = null
-//    open fun getUsers(onError: (Throwable) -> Unit = {}): Observable<List<User>> {
-//        clear()
-//        val data = database.userDao().loadUsers()
-//
-//       disposable = userApi.getUsersByReputation(100)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribeWith(object : DisposableSingleObserver<UserResponse>() {
-//                override fun onSuccess(t: UserResponse) {
-//                    t.users?.let {
-//                        database.runInTransaction{
-//                            database.userDao().insert(it)
-//                        }
-//                    }
-//                }
-//
-//                override fun onError(e: Throwable) {
-//                  onError.invoke(e)
-//                }
-//            })
-//        return data
-//    }
 
     fun getUsers(onError: (Throwable) -> Unit = {}): Observable<List<User>> {
         return Observable.concatArray(

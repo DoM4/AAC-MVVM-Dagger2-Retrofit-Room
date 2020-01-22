@@ -15,13 +15,13 @@ import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(),UserSelectedListener {
 
-    override fun onUserClicked(user: User) {
+    override fun onUserClicked(userId: Int) {
 
         val detailsFragment = supportFragmentManager.fragments.find {
             it is UserDetailsFragment
         } ?: UserDetailsFragment()
 
-        detailsFragment.arguments = Bundle().apply { putParcelable(USER_BUNDLE, user) }
+        detailsFragment.arguments = Bundle().apply { putInt(USER_BUNDLE, userId) }
 
         supportFragmentManager.beginTransaction()
             .add(R.id.screenContainer, detailsFragment)

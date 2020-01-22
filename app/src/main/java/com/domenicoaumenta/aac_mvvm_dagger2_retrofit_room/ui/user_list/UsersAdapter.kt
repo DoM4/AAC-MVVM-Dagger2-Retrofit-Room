@@ -53,7 +53,7 @@ class UsersAdapter(val userSelectedListener: UserSelectedListener?) : RecyclerVi
                 .into(itemView.userThumbnail)
 
             itemView.userContainer?.setOnClickListener {
-                userSelectedListener?.onUserClicked(user)
+                userSelectedListener?.onUserClicked(user.userId)
             }
         }
 

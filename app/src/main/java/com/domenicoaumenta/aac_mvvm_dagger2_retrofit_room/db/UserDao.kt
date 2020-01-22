@@ -21,5 +21,5 @@ abstract class UserDao {
     abstract fun loadUsers(): Observable<List<User>>
 
     @Query("SELECT * FROM User WHERE :userId = userId")
-    abstract fun getUser(userId: String): Single<User>
+    abstract fun getUser(userId: Int): Observable<User>
 }

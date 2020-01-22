@@ -1,5 +1,6 @@
 package com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.repository
 
+import androidx.lifecycle.LiveData
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.api.UserApi
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.db.UserDatabase
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.User
@@ -31,7 +32,7 @@ open class UserRepository @Inject constructor(
     }
 
 
-    fun getUsersFromDb(): Observable<List<User>> {
+    private fun getUsersFromDb(): Observable<List<User>> {
 
         return database.userDao().loadUsers()
             .doOnNext {
@@ -39,7 +40,7 @@ open class UserRepository @Inject constructor(
             }
     }
 
-    fun getUsersFromApi(onError: (Throwable) -> Unit = {}): Observable<List<User>> {
+    private fun getUsersFromApi(onError: (Throwable) -> Unit = {}): Observable<List<User>> {
 
         var users : Observable<List<User>> = Observable.just(emptyList())
 
@@ -70,6 +71,9 @@ open class UserRepository @Inject constructor(
             }
     }
 
+    fun getUserById(userId : Int) : Observable<User>{
+        return database.userDao().getUser(userId)
+    }
 
     fun clear(){
         disposable?.dispose()

@@ -27,6 +27,9 @@ class UserListViewModel @Inject constructor(private val userRepository: UserRepo
 
     fun getUserList(): LiveData<List<User>> = showUserListFromNetwork()
 
+    fun getUserById(userId : Int) : LiveData<User> =
+        LiveDataReactiveStreams.fromPublisher(userRepository.getUserById(userId).toFlowable(BackpressureStrategy.LATEST))
+
     fun showUserListFromNetwork() : LiveData<List<User>> {
         EspressoIdlingResource.increment()
         return LiveDataReactiveStreams.fromPublisher(userRepository.getUsers {mutableOnError.value = it}.toFlowable(BackpressureStrategy.LATEST))

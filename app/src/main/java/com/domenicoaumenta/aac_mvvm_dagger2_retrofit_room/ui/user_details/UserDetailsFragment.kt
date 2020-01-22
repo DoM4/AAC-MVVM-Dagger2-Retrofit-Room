@@ -5,14 +5,18 @@ import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProviders
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.R
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.User
+import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.ui.user_list.UserListViewModel
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.CircleTransform
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.USER_BUNDLE
+import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.ViewModelFactory
 import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.user_details_fragment.*
 import java.util.*
+import javax.inject.Inject
 
 
 /**
@@ -20,21 +24,31 @@ import java.util.*
  */
 class UserDetailsFragment : DaggerFragment(){
 
-    var user : User? = null
+    @Inject
+    lateinit var viewModelFactory : ViewModelFactory
+
+    private lateinit var userViewModel : UserListViewModel
+
+    var userId : Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        user = arguments?.getParcelable(USER_BUNDLE)
+        userId = arguments?.getInt(USER_BUNDLE)
         return inflater.inflate(R.layout.user_details_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userViewModel = ViewModelProviders.of(this,viewModelFactory)[UserListViewModel::class.java]
+        userId?.let { userId ->
+            userViewModel.getUserById(userId).observe(viewLifecycleOwner,androidx.lifecycle.Observer { user ->
+                populateUserDetails(user)
+            })
 
-        populateUserDetails(user)
+        }
     }
 
     private fun populateUserDetails(user : User?){

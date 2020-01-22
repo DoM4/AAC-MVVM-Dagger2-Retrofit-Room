@@ -11,7 +11,6 @@ import kotlinx.android.parcel.Parcelize
  * Created by domenicoaumenta on 2020-01-09.
  */
 @Entity
-@Parcelize
 data class User(
     @PrimaryKey
     val userId: Int,
@@ -34,4 +33,4 @@ data class User(
     val userType: String,
     val viewCount: Int,
     val websiteUrl: String?
-) : Parcelable
+)

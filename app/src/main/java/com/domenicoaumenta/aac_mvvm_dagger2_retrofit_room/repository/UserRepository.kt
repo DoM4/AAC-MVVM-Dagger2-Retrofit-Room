@@ -5,10 +5,9 @@ import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.api.UserApi
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.db.UserDatabase
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.User
 import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.model.UserResponse
+import com.domenicoaumenta.aac_mvvm_dagger2_retrofit_room.utils.ApiResponse
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -22,45 +21,49 @@ open class UserRepository @Inject constructor(
     private val database: UserDatabase
 ) {
 
-    var disposable : Disposable? = null
-    var dbDisposable : Disposable? = null
+    var disposable: Disposable? = null
+    var dbDisposable: Disposable? = null
 
-    fun getUsers(onError: (Throwable) -> Unit = {}): Observable<List<User>> {
-        return Observable.concatArray(
-            getUsersFromDb(),
-            getUsersFromApi(onError))
+    fun getLiveDataUsers(): LiveData<ApiResponse<UserResponse>> {
+        return userApi.getUsersByReputation(100)
     }
 
-
-    private fun getUsersFromDb(): Observable<List<User>> {
-
-        return database.userDao().loadUsers()
-            .doOnNext {
-                println("Dispatching ${it.size} users from DB...")
-            }
-    }
-
-    private fun getUsersFromApi(onError: (Throwable) -> Unit = {}): Observable<List<User>> {
-
-        var users : Observable<List<User>> = Observable.just(emptyList())
-
-        disposable = userApi.getUsersByReputation(100)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : DisposableSingleObserver<UserResponse>() {
-                override fun onSuccess(t: UserResponse) {
-                    t.users?.let {
-                       users = Observable.just(it)
-                       storeUsersInDb(it)
-                    }
-                }
-
-                override fun onError(e: Throwable) {
-                    onError.invoke(e)
-                }
-            })
-       return users
-    }
+//    fun getUsers(onError: (Throwable) -> Unit = {}): Observable<List<User>> {
+//        return Observable.concatArray(
+//            getUsersFromDb(),
+//            getUsersFromApi(onError))
+//    }
+//
+//
+//    private fun getUsersFromDb(): Observable<List<User>> {
+//
+//        return database.userDao().loadUsers()
+//            .doOnNext {
+//                println("Dispatching ${it.size} users from DB...")
+//            }
+//    }
+//
+//    private fun getUsersFromApi(onError: (Throwable) -> Unit = {}): Observable<List<User>> {
+//
+//        var users : Observable<List<User>> = Observable.just(emptyList())
+//
+//        disposable = userApi.getUsersByReputation(100)
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribeWith(object : DisposableSingleObserver<UserResponse>() {
+//                override fun onSuccess(t: UserResponse) {
+//                    t.users?.let {
+//                       users = Observable.just(it)
+//                       storeUsersInDb(it)
+//                    }
+//                }
+//
+//                override fun onError(e: Throwable) {
+//                    onError.invoke(e)
+//                }
+//            })
+//       return users
+//    }
 
     fun storeUsersInDb(users: List<User>) {
         dbDisposable = Observable.fromCallable { database.userDao().insert(users) }
@@ -79,4 +82,5 @@ open class UserRepository @Inject constructor(
         disposable?.dispose()
         dbDisposable?.dispose()
     }
+
 }
